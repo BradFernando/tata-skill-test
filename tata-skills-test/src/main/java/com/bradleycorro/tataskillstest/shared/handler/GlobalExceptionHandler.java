@@ -1,4 +1,4 @@
-package com.bradleycorro.tataskillstest.shared.infrastructure.handler;
+package com.bradleycorro.tataskillstest.shared.handler;
 
 import com.bradleycorro.tataskillstest.shared.dto.responsegeneral.api.ApiResponse;
 import com.bradleycorro.tataskillstest.shared.dto.responsegeneral.api.ErrorResponse;
