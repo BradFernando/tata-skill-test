@@ -1,12 +1,13 @@
 package com.bradleycorro.tataskillstest.productos.infrastructure.adapters.mappers;
 
+import com.bradleycorro.tataskillstest.productos.application.dtos.ProductoResponse;
 import com.bradleycorro.tataskillstest.productos.domain.models.Producto;
 import com.bradleycorro.tataskillstest.productos.infrastructure.adapters.repository.jpa.ProductoEntity;
 import org.springframework.stereotype.Component;
 
 /**
- * Mapper responsable de convertir entre el modelo de dominio y la entidad JPA.
- * Mantiene el dominio aislado de detalles de persistencia.
+ * Mapper responsable de convertir entre el modelo de dominio, la entidad JPA y DTOs de salida.
+ * Mantiene el dominio aislado de detalles de persistencia y de la capa externa.
  */
 @Component
 public class ProductoMapper {
@@ -35,6 +36,22 @@ public class ProductoMapper {
     public ProductoEntity toEntity(Producto domain) {
         if (domain == null) return null;
         return ProductoEntity.builder()
+                .id(domain.getId())
+                .nombre(domain.getNombre())
+                .descripcion(domain.getDescripcion())
+                .precio(domain.getPrecio())
+                .stock(domain.getStock())
+                .build();
+    }
+
+    /**
+     * Convierte un objeto de dominio a un DTO de respuesta.
+     * @param domain objeto de dominio.
+     * @return DTO de respuesta o null si domain es null.
+     */
+    public ProductoResponse toResponse(Producto domain) {
+        if (domain == null) return null;
+        return ProductoResponse.builder()
                 .id(domain.getId())
                 .nombre(domain.getNombre())
                 .descripcion(domain.getDescripcion())
