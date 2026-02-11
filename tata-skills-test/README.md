@@ -11,8 +11,8 @@ Este microservicio ha sido desarrollado como parte del proceso de selección para
 El propósito de este desarrollo es validar la capacidad técnica en:
 1.  **Arquitectura Hexagonal:** Separación clara entre la lógica de negocio (Dominio), la orquestación (Aplicación) y las implementaciones técnicas (Infraestructura).
 2.  **Flexibilidad de Persistencia:** Uso de Spring Data JPA para garantizar la compatibilidad con diferentes bases de datos relacionales (en este caso, configurado para **PostgreSQL**).
-3.  **Estandarización de APIs:** Implementación de un formato de respuesta único (`ApiResponse<T>`) y manejo global de excepciones para una comunicación consistente con el frontend u otros servicios.
-4.  **Calidad de Código:** Uso de patrones de diseño, mappers para separar entidades de modelos de dominio y validaciones robustas.
+3.  **Estandarización de APIs:** Implementación de un formato de respuesta único (`ApiResponse<T>`) y el uso de DTOs específicos para entrada (`Request`) y salida (`Response`), asegurando que el modelo de dominio nunca se exponga directamente.
+4.  **Calidad de Código:** Uso de patrones de diseño, mappers especializados y validaciones robustas.
 
 ## Estructura del Proyecto
 
@@ -28,7 +28,7 @@ Contiene la lógica puramente de negocio, independiente de frameworks.
 ### 2. Capa de Aplicación (`application`)
 Orquesta el flujo de datos.
 - **Use Cases:** Implementaciones de los puertos de entrada.
-- **DTOs:** Objetos de transferencia de datos para las peticiones externas.
+- **DTOs:** Objetos de transferencia de datos. Se separan en `ProductoRequest` (entrada) y `ProductoResponse` (salida) para desacoplar el contrato externo del dominio interno.
 
 ### 3. Capa de Infraestructura (`infrastructure`)
 Implementaciones técnicas y detalles de frameworks.
@@ -105,6 +105,7 @@ Validar competencias en:
 
 ### Decisiones de Diseño (criterio senior)
 - Evitar fugas de infraestructura al dominio (entidades JPA NO se usan en el dominio).
+- Desacoplamiento total de la API: El uso de `ProductoResponse` garantiza que cambios en el modelo de dominio no afecten obligatoriamente al contrato externo, y permite filtrar datos sensibles o calculados.
 - Endpoints idempotentes, semántica de estados HTTP correcta (201, 200, 204, 404, 500).
 - Listas inmutables vía `Stream.toList()` para prevenir mutaciones accidentales.
 - `instanceof` con pattern matching para mayor legibilidad y seguridad.

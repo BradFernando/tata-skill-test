@@ -1,4 +1,4 @@
-package com.bradleycorro.tataskillstest.productos.application.usecases;
+package com.bradleycorro.tataskillstest.productos.application.usecase;
 
 import com.bradleycorro.tataskillstest.productos.domain.exceptions.ProductoNotFoundException;
 import com.bradleycorro.tataskillstest.productos.domain.models.Producto;

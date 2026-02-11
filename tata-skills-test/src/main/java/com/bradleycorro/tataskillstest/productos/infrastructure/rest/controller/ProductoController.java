@@ -1,9 +1,13 @@
 package com.bradleycorro.tataskillstest.productos.infrastructure.rest.controller;
 
-import com.bradleycorro.tataskillstest.productos.application.dtos.ProductoRequest;
+import com.bradleycorro.tataskillstest.productos.application.dto.ProductoRequest;
+import com.bradleycorro.tataskillstest.productos.application.dto.ProductoResponse;
 import com.bradleycorro.tataskillstest.productos.domain.models.Producto;
 import com.bradleycorro.tataskillstest.productos.domain.ports.in.IProductoUseCaseIn;
+import com.bradleycorro.tataskillstest.productos.infrastructure.adapters.mappers.ProductoMapper;
 import com.bradleycorro.tataskillstest.shared.dto.responsegeneral.api.ApiResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,25 +31,29 @@ import java.util.List;
 @RestController
 @RequestMapping("/productos")
 @RequiredArgsConstructor
+@Tag(name = "Productos", description = "Endpoints para la gestión de productos")
 public class ProductoController {
 
     private final IProductoUseCaseIn productoUseCaseIn;
+    private final ProductoMapper productoMapper;
 
     /**
      * Crea un nuevo producto.
      * @param request DTO con datos validados del producto a crear.
      * @return Respuesta con el producto creado y estado 201.
      */
+    @Operation(summary = "Crear un nuevo producto", description = "Permite registrar un producto en el catálogo.")
     @PostMapping
-    public ResponseEntity<ApiResponse<Producto>> crear(@Valid @RequestBody ProductoRequest request) {
+    public ResponseEntity<ApiResponse<ProductoResponse>> crear(@Valid @RequestBody ProductoRequest request) {
         Producto producto = Producto.builder()
                 .nombre(request.getNombre())
                 .descripcion(request.getDescripcion())
                 .precio(request.getPrecio())
                 .stock(request.getStock())
                 .build();
+        ProductoResponse response = productoMapper.toResponse(productoUseCaseIn.crear(producto));
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(ApiResponse.success(productoUseCaseIn.crear(producto)));
+                .body(ApiResponse.success(response));
     }
 
     /**
@@ -53,20 +61,25 @@ public class ProductoController {
      * @param id identificador del producto.
      * @return 200 con el producto si existe; 404 en caso contrario.
      */
+    @Operation(summary = "Obtener producto por ID", description = "Busca un producto específico mediante su identificador único.")
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<Producto>> obtenerPorId(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<ProductoResponse>> obtenerPorId(@PathVariable Long id) {
         return productoUseCaseIn.obtenerPorId(id)
-                .map(p -> ResponseEntity.ok(ApiResponse.success(p)))
-                .orElse(ResponseEntity.notFound().build());
+                .map(p -> ResponseEntity.ok(ApiResponse.success(productoMapper.toResponse(p))))
+                .orElseThrow(() -> new com.bradleycorro.tataskillstest.productos.domain.exceptions.ProductoNotFoundException(id));
     }
 
     /**
      * Lista todos los productos.
      * @return 200 con la lista de productos.
      */
+    @Operation(summary = "Listar todos los productos", description = "Recupera una lista de todos los productos registrados.")
     @GetMapping
-    public ResponseEntity<ApiResponse<List<Producto>>> obtenerTodos() {
-        return ResponseEntity.ok(ApiResponse.success(productoUseCaseIn.obtenerTodos()));
+    public ResponseEntity<ApiResponse<List<ProductoResponse>>> obtenerTodos() {
+        List<ProductoResponse> response = productoUseCaseIn.obtenerTodos().stream()
+                .map(productoMapper::toResponse)
+                .toList();
+        return ResponseEntity.ok(ApiResponse.success(response));
     }
 
     /**
@@ -75,15 +88,17 @@ public class ProductoController {
      * @param request DTO con los datos a modificar.
      * @return 200 con el producto actualizado.
      */
+    @Operation(summary = "Actualizar producto", description = "Modifica los datos de un producto existente.")
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<Producto>> actualizar(@PathVariable Long id, @Valid @RequestBody ProductoRequest request) {
+    public ResponseEntity<ApiResponse<ProductoResponse>> actualizar(@PathVariable Long id, @Valid @RequestBody ProductoRequest request) {
         Producto producto = Producto.builder()
                 .nombre(request.getNombre())
                 .descripcion(request.getDescripcion())
                 .precio(request.getPrecio())
                 .stock(request.getStock())
                 .build();
-        return ResponseEntity.ok(ApiResponse.success(productoUseCaseIn.actualizar(id, producto)));
+        ProductoResponse response = productoMapper.toResponse(productoUseCaseIn.actualizar(id, producto));
+        return ResponseEntity.ok(ApiResponse.success(response));
     }
 
     /**
@@ -91,9 +106,11 @@ public class ProductoController {
      * @param id identificador del producto a eliminar.
      * @return 204 sin contenido.
      */
+    @Operation(summary = "Eliminar producto", description = "Elimina físicamente un producto del sistema.")
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> eliminar(@PathVariable Long id) {
         productoUseCaseIn.eliminar(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                .body(ApiResponse.success(null));
     }
 }

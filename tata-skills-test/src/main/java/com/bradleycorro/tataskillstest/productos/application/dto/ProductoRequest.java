@@ -1,4 +1,4 @@
-package com.bradleycorro.tataskillstest.productos.application.dtos;
+package com.bradleycorro.tataskillstest.productos.application.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
