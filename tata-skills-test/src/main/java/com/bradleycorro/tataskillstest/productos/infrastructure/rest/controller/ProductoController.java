@@ -25,7 +25,7 @@ import java.util.List;
  * Todas las respuestas utilizan el contenedor estándar {@link com.bradleycorro.tataskillstest.shared.dto.responsegeneral.api.ApiResponse}.
  */
 @RestController
-@RequestMapping("/api/v1/productos")
+@RequestMapping("/productos")
 @RequiredArgsConstructor
 public class ProductoController {
 
