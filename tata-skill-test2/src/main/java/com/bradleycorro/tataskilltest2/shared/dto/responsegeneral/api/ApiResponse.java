@@ -1,4 +1,4 @@
-package com.bradleycorro.tataskillstest.shared.dto.responsegeneral.api;
+package com.bradleycorro.tataskilltest2.shared.dto.responsegeneral.api;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * Contenedor estándar para todas las respuestas de la API.
- * Garantiza consistencia entre respuestas exitosas y de error en el microservicio.
+ * Diseño simple y consistente con el microservicio 1.
  */
 @Data
 @Builder
@@ -20,7 +20,6 @@ public class ApiResponse<T> {
 
     /**
      * Construye una respuesta exitosa.
-     * @param data carga útil devuelta por el endpoint.
      */
     public static <T> ApiResponse<T> success(T data) {
         return ApiResponse.<T>builder()
@@ -31,7 +30,6 @@ public class ApiResponse<T> {
 
     /**
      * Construye una respuesta de error con la estructura estandarizada.
-     * @param error detalle del error.
      */
     public static <T> ApiResponse<T> error(ErrorResponse error) {
         return ApiResponse.<T>builder()
