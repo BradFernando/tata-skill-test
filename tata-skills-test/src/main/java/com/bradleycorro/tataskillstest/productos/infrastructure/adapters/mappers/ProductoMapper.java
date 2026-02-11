@@ -1,6 +1,6 @@
 package com.bradleycorro.tataskillstest.productos.infrastructure.adapters.mappers;
 
-import com.bradleycorro.tataskillstest.productos.application.dtos.ProductoResponse;
+import com.bradleycorro.tataskillstest.productos.application.dto.ProductoResponse;
 import com.bradleycorro.tataskillstest.productos.domain.models.Producto;
 import com.bradleycorro.tataskillstest.productos.infrastructure.adapters.repository.jpa.ProductoEntity;
 import org.springframework.stereotype.Component;

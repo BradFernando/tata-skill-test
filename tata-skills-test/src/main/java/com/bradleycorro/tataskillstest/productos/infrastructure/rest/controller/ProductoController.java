@@ -1,7 +1,7 @@
 package com.bradleycorro.tataskillstest.productos.infrastructure.rest.controller;
 
-import com.bradleycorro.tataskillstest.productos.application.dtos.ProductoRequest;
-import com.bradleycorro.tataskillstest.productos.application.dtos.ProductoResponse;
+import com.bradleycorro.tataskillstest.productos.application.dto.ProductoRequest;
+import com.bradleycorro.tataskillstest.productos.application.dto.ProductoResponse;
 import com.bradleycorro.tataskillstest.productos.domain.models.Producto;
 import com.bradleycorro.tataskillstest.productos.domain.ports.in.IProductoUseCaseIn;
 import com.bradleycorro.tataskillstest.productos.infrastructure.adapters.mappers.ProductoMapper;
@@ -66,7 +66,7 @@ public class ProductoController {
     public ResponseEntity<ApiResponse<ProductoResponse>> obtenerPorId(@PathVariable Long id) {
         return productoUseCaseIn.obtenerPorId(id)
                 .map(p -> ResponseEntity.ok(ApiResponse.success(productoMapper.toResponse(p))))
-                .orElse(ResponseEntity.notFound().build());
+                .orElseThrow(() -> new com.bradleycorro.tataskillstest.productos.domain.exceptions.ProductoNotFoundException(id));
     }
 
     /**

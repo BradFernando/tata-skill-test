@@ -1,4 +1,4 @@
-package com.bradleycorro.tataskillstest.productos.application.dtos;
+package com.bradleycorro.tataskillstest.productos.application.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
