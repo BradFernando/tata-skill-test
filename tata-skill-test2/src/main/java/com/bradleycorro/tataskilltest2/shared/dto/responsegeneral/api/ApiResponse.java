@@ -1,40 +1,58 @@
 package com.bradleycorro.tataskilltest2.shared.dto.responsegeneral.api;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * Contenedor estándar para todas las respuestas de la API.
- * Diseño simple y consistente con el microservicio 1.
- */
+import java.time.LocalDateTime;
+
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ApiResponse<T> {
-    private boolean success;
+    private Boolean success;
     private T data;
-    private ErrorResponse error;
+    private String message;
+    private LocalDateTime timestamp;
 
-    /**
-     * Construye una respuesta exitosa.
-     */
     public static <T> ApiResponse<T> success(T data) {
         return ApiResponse.<T>builder()
                 .success(true)
                 .data(data)
+                .timestamp(LocalDateTime.now())
                 .build();
     }
 
-    /**
-     * Construye una respuesta de error con la estructura estandarizada.
-     */
-    public static <T> ApiResponse<T> error(ErrorResponse error) {
+    public static <T> ApiResponse<T> success(T data, String message) {
+        return ApiResponse.<T>builder()
+                .success(true)
+                .data(data)
+                .message(message)
+                .timestamp(LocalDateTime.now())
+                .build();
+    }
+
+    public static <T> ApiResponse<T> created(T data, String message, String path) {
+        return success(data, message);
+    }
+
+    public static <T> ApiResponse<T> ok(T data, String message, String path) {
+        return success(data, message);
+    }
+
+    public static <T> ApiResponse<T> noContent(String message, String path) {
+        return success(null, message);
+    }
+
+    public static <T> ApiResponse<T> error(org.springframework.http.HttpStatus status, String message, String path, java.util.List<ErrorResponse> errors) {
         return ApiResponse.<T>builder()
                 .success(false)
-                .error(error)
+                .message(message)
+                .timestamp(LocalDateTime.now())
                 .build();
     }
 }
