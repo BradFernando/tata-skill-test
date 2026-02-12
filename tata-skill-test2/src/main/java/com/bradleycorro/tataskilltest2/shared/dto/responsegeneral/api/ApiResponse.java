@@ -1,58 +1,42 @@
 package com.bradleycorro.tataskilltest2.shared.dto.responsegeneral.api;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
+/**
+ * Contenedor estandar para todas las respuestas de la API.
+ * Garantiza consistencia entre respuestas exitosas y de error en el microservicio.
+ */
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ApiResponse<T> {
-    private Boolean success;
+    private boolean success;
     private T data;
-    private String message;
-    private LocalDateTime timestamp;
+    private ErrorResponse error;
 
+    /**
+     * Construye una respuesta exitosa.
+     * @param data carga util devuelta por el endpoint.
+     */
     public static <T> ApiResponse<T> success(T data) {
         return ApiResponse.<T>builder()
                 .success(true)
                 .data(data)
-                .timestamp(LocalDateTime.now())
                 .build();
     }
 
-    public static <T> ApiResponse<T> success(T data, String message) {
-        return ApiResponse.<T>builder()
-                .success(true)
-                .data(data)
-                .message(message)
-                .timestamp(LocalDateTime.now())
-                .build();
-    }
-
-    public static <T> ApiResponse<T> created(T data, String message, String path) {
-        return success(data, message);
-    }
-
-    public static <T> ApiResponse<T> ok(T data, String message, String path) {
-        return success(data, message);
-    }
-
-    public static <T> ApiResponse<T> noContent(String message, String path) {
-        return success(null, message);
-    }
-
-    public static <T> ApiResponse<T> error(org.springframework.http.HttpStatus status, String message, String path, java.util.List<ErrorResponse> errors) {
+    /**
+     * Construye una respuesta de error con la estructura estandarizada.
+     * @param error detalle del error.
+     */
+    public static <T> ApiResponse<T> error(ErrorResponse error) {
         return ApiResponse.<T>builder()
                 .success(false)
-                .message(message)
-                .timestamp(LocalDateTime.now())
+                .error(error)
                 .build();
     }
 }

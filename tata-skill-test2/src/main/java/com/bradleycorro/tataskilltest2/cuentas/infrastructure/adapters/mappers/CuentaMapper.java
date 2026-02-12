@@ -9,14 +9,14 @@ import org.springframework.stereotype.Component;
 public class CuentaMapper {
     public Cuenta toDomain(CuentaEntity entity) {
         if (entity == null) return null;
-        return new Cuenta(
-                entity.getId(),
-                entity.getNumeroCuenta(),
-                entity.getTipoCuenta(),
-                entity.getSaldoInicial(),
-                entity.getEstado(),
-                entity.getClienteId()
-        );
+        return Cuenta.builder()
+                .id(entity.getId())
+                .numeroCuenta(entity.getNumeroCuenta())
+                .tipoCuenta(entity.getTipoCuenta())
+                .saldoInicial(entity.getSaldoInicial())
+                .estado(entity.getEstado())
+                .clienteId(entity.getClienteId())
+                .build();
     }
 
     public CuentaEntity toEntity(Cuenta domain) {

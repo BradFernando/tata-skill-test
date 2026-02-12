@@ -1,5 +1,6 @@
 package com.bradleycorro.tataskilltest2.cuentas.application.usecase;
 
+import com.bradleycorro.tataskilltest2.cuentas.domain.exceptions.CuentaNotFoundException;
 import com.bradleycorro.tataskilltest2.cuentas.domain.models.Cuenta;
 import com.bradleycorro.tataskilltest2.cuentas.domain.ports.in.ICuentaUseCaseIn;
 import com.bradleycorro.tataskilltest2.cuentas.domain.ports.out.ICuentaRepositoryOut;
@@ -15,6 +16,11 @@ public class CuentaUseCase implements ICuentaUseCaseIn {
 
     private final ICuentaRepositoryOut repository;
 
+    /**
+     * Crea una nueva cuenta en el sistema.
+     * @param cuenta Datos de la cuenta a persistir.
+     * @return Cuenta creada con su ID generado.
+     */
     @Override
     public Cuenta createCuenta(Cuenta cuenta) {
         return repository.save(cuenta);
@@ -35,20 +41,23 @@ public class CuentaUseCase implements ICuentaUseCaseIn {
         return repository.findAll();
     }
 
+    /**
+     * Actualiza una cuenta existente.
+     * @param id Identificador unico de la cuenta.
+     * @param cuenta Datos actualizados.
+     * @return Cuenta persistida con los nuevos valores.
+     * @throws CuentaNotFoundException Si la cuenta no existe.
+     */
     @Override
     public Cuenta updateCuenta(Long id, Cuenta cuenta) {
-        if (!repository.existsById(id)) {
-            throw new RuntimeException("Cuenta no encontrada");
-        }
+        repository.findById(id).orElseThrow(CuentaNotFoundException::new);
         cuenta.setId(id);
         return repository.save(cuenta);
     }
 
     @Override
     public void deleteCuenta(Long id) {
-        if (!repository.existsById(id)) {
-            throw new RuntimeException("Cuenta no encontrada");
-        }
+        repository.findById(id).orElseThrow(CuentaNotFoundException::new);
         repository.deleteById(id);
     }
 }

@@ -10,6 +10,5 @@ public interface ICuentaRepositoryOut {
     Optional<Cuenta> findByNumeroCuenta(String numeroCuenta);
     List<Cuenta> findAll();
     List<Cuenta> findByClienteId(Long clienteId);
-    boolean existsById(Long id);
     void deleteById(Long id);
 }
