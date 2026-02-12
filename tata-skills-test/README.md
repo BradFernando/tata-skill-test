@@ -3,16 +3,16 @@
 Este microservicio ha sido desarrollado como parte del proceso de selección para **Tata Consultancy Services (TCS)**. 
 
 ## Información del Candidato
-- **Nombre:** Bradley Fernando Corro Muñoz
+- **Nombre:** Bradley Fernando Corro Munoz
 - **Posición:** Desarrollador Backend Java
-- **Objetivo:** Demostrar habilidades en el diseño de arquitecturas escalables, limpias y mantenibles utilizando Java, Spring Boot y Arquitectura Hexagonal.
+- **Objetivo:** Demostrar habilidades en el diseno de arquitecturas escalables, limpias y mantenibles utilizando Java, Spring Boot y Arquitectura Hexagonal.
 
 ## Propósito del Test
 El propósito de este desarrollo es validar la capacidad técnica en:
 1.  **Arquitectura Hexagonal:** Separación clara entre la lógica de negocio (Dominio), la orquestación (Aplicación) y las implementaciones técnicas (Infraestructura).
 2.  **Flexibilidad de Persistencia:** Uso de Spring Data JPA para garantizar la compatibilidad con diferentes bases de datos relacionales (en este caso, configurado para **PostgreSQL**).
 3.  **Estandarización de APIs:** Implementación de un formato de respuesta único (`ApiResponse<T>`) y el uso de DTOs específicos para entrada (`Request`) y salida (`Response`), asegurando que el modelo de dominio nunca se exponga directamente.
-4.  **Calidad de Código:** Uso de patrones de diseño, mappers especializados y validaciones robustas.
+4.  **Calidad de Código:** Uso de patrones de diseno, mappers especializados y validaciones robustas.
 
 ## Estructura del Proyecto
 
@@ -67,9 +67,9 @@ Componentes transversales reutilizables.
 Este microservicio ha sido desarrollado como parte del proceso de selección para **Tata Consultancy Services (TCS)**.
 
 ## Información del Candidato
-- **Nombre:** Bradley Fernando Corro Muñoz
+- **Nombre:** Bradley Fernando Corro Munoz
 - **Perfil:** Senior Backend Engineer (Java)
-- **Objetivo:** Demostrar criterios senior en diseño, mantenibilidad, calidad y estandarización mediante Java 21, Spring Boot y Arquitectura Hexagonal.
+- **Objetivo:** Demostrar criterios senior en diseno, mantenibilidad, calidad y estandarización mediante Java 21, Spring Boot y Arquitectura Hexagonal.
 
 ## Propósito del Test
 Validar competencias en:
@@ -103,7 +103,7 @@ Validar competencias en:
   - `ApiResponse<T>`, `ErrorResponse` (formato único de respuesta).
   - `GlobalExceptionHandler` (traducción uniforme de errores).
 
-### Decisiones de Diseño (criterio senior)
+### Decisiones de Diseno (criterio senior)
 - Evitar fugas de infraestructura al dominio (entidades JPA NO se usan en el dominio).
 - Desacoplamiento total de la API: El uso de `ProductoResponse` garantiza que cambios en el modelo de dominio no afecten obligatoriamente al contrato externo, y permite filtrar datos sensibles o calculados.
 - Endpoints idempotentes, semántica de estados HTTP correcta (201, 200, 204, 404, 500).
@@ -150,4 +150,5 @@ spring.jpa.show-sql=true
 - Cobertura futura: se sugiere incorporar pruebas unitarias para `ProductoUseCase` y pruebas slice para REST y JPA.
 
 ## Autor
-- Bradley Fernando Corro Muñoz — Enfocado en soluciones limpias, mantenibles y escalables bajo principios SOLID y arquitectura hexagonal.
+- Bradley Fernando Corro Munoz — Enfocado en soluciones limpias, mantenibles y escalables bajo principios SOLID y arquitectura hexagonal.
+

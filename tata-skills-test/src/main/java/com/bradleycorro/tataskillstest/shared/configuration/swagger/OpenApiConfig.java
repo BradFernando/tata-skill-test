@@ -27,7 +27,7 @@ import java.util.List;
                 version = "${app.version:1.0.0}",
                 description = "Microservicio de gestión de productos siguiendo arquitectura hexagonal. " +
                         "Incluye estandarización de respuestas (ApiResponse) y manejo global de errores.",
-                contact = @Contact(name = "Bradley Fernando Corro Muñoz"),
+                contact = @Contact(name = "Bradley Fernando Corro Munoz"),
                 license = @License(name = "Apache 2.0", url = "https://www.apache.org/licenses/LICENSE-2.0")
         ),
         servers = {
@@ -52,7 +52,7 @@ public class OpenApiConfig {
                         .description("API del microservicio de Productos. Endpoints documentados con springdoc-openapi. "+
                                 "Contratos estables mediante DTOs de entrada/salida y respuestas normalizadas.")
                         .contact(new io.swagger.v3.oas.models.info.Contact()
-                                .name("Bradley Fernando Corro Muñoz"))
+                                .name("Bradley Fernando Corro Munoz"))
                         .license(new io.swagger.v3.oas.models.info.License()
                                 .name("Apache 2.0")
                                 .url("https://www.apache.org/licenses/LICENSE-2.0"))
