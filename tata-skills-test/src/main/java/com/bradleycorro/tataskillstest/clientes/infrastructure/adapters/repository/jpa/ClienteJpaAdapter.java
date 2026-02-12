@@ -9,6 +9,10 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Adaptador de salida para la persistencia de Clientes usando Spring Data JPA.
+ * Implementa la interfaz definida en el dominio (puerto) para aislar la infraestructura.
+ */
 @Component
 @RequiredArgsConstructor
 public class ClienteJpaAdapter implements IClienteRepositoryOut {
@@ -16,6 +20,9 @@ public class ClienteJpaAdapter implements IClienteRepositoryOut {
     private final IClienteJpaRepository clienteJpaRepository;
     private final ClienteMapper clienteMapper;
 
+    /**
+     * Persiste un cliente en la base de datos tras realizar el mapeo de dominio a entidad.
+     */
     @Override
     public Cliente save(Cliente cliente) {
         ClienteEntity entity = clienteMapper.toEntity(cliente);

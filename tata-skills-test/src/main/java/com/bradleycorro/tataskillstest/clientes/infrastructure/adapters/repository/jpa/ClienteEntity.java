@@ -6,6 +6,10 @@ import jakarta.persistence.Table;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+/**
+ * Entidad JPA para la tabla 'cliente'.
+ * Representa la especializacion de Persona en la persistencia.
+ */
 @Entity
 @Table(name = "cliente")
 @Getter

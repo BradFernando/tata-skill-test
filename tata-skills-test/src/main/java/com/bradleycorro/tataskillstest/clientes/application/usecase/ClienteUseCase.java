@@ -10,21 +10,31 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Implementacion del puerto de entrada (Caso de Uso) para la gestion de clientes.
+ * Coordina la logica de negocio y la comunicacion con los adaptadores de salida.
+ */
 @Service
 @RequiredArgsConstructor
 public class ClienteUseCase implements IClienteUseCaseIn {
 
     private final IClienteRepositoryOut clienteRepositoryOut;
 
+    /**
+     * Registra un nuevo cliente asegurando la generacion de un identificador unico de sistema.
+     */
     @Override
     public Cliente createCliente(Cliente cliente) {
-        // Generar un clienteId único si no viene
+        // Generar un clienteId unico si no se proporciona
         if (cliente.getClienteId() == null || cliente.getClienteId().isEmpty()) {
             cliente.setClienteId(UUID.randomUUID().toString());
         }
         return clienteRepositoryOut.save(cliente);
     }
 
+    /**
+     * Actualiza los datos de un cliente existente tras verificar su existencia.
+     */
     @Override
     public Cliente updateCliente(Long id, Cliente cliente) {
         return clienteRepositoryOut.findById(id)

@@ -33,10 +33,11 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Void>> handleGeneralException(Exception ex) {
+        String message = ex.getMessage() != null ? ex.getMessage() : "Error interno del servidor";
         ErrorResponse error = ErrorResponse.builder()
                 .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .type("INTERNAL_SERVER_ERROR")
-                .message(ex.getMessage())
+                .message(message)
                 .build();
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ApiResponse.error(error));
     }

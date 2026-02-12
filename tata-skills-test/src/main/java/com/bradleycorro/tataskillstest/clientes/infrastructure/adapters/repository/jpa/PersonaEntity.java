@@ -7,6 +7,10 @@ import org.hibernate.proxy.HibernateProxy;
 
 import java.util.Objects;
 
+/**
+ * Entidad JPA para la tabla 'persona'.
+ * Utiliza la estrategia JOINED para manejar la herencia en la base de datos relacional.
+ */
 @Entity
 @Table(name = "persona")
 @Inheritance(strategy = InheritanceType.JOINED)

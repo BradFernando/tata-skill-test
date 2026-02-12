@@ -22,6 +22,8 @@ class ClienteIntegrationTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
+    private static final String CLIENTES_URL = "/clientes";
+
     @Test
     void testCreateAndGetCliente() {
         // 1. Create Cliente
@@ -37,7 +39,7 @@ class ClienteIntegrationTest {
                 .build();
 
         ResponseEntity<ApiResponse<ClienteResponse>> postResponse = restTemplate.exchange(
-                "/clientes",
+                CLIENTES_URL,
                 HttpMethod.POST,
                 new org.springframework.http.HttpEntity<>(request),
                 new ParameterizedTypeReference<ApiResponse<ClienteResponse>>() {}
@@ -52,7 +54,7 @@ class ClienteIntegrationTest {
 
         // 2. Get Cliente by ID
         ResponseEntity<ApiResponse<ClienteResponse>> getResponse = restTemplate.exchange(
-                "/clientes/" + created.getId(),
+                CLIENTES_URL + "/" + created.getId(),
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<ApiResponse<ClienteResponse>>() {}
