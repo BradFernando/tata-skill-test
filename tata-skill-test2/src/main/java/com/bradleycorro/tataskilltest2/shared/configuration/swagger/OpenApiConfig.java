@@ -18,26 +18,13 @@ import org.springframework.context.annotation.Configuration;
                 title = "Tata Skills Test 2 - API",
                 version = "1.0.0",
                 description = "API del microservicio tata-skill-test2 (Cuentas y Movimientos)"
-        ),
-        servers = {
-                @Server(url = "/api2/v1", description = "Base Path (context-path)")
-        }
+        )
 )
 public class OpenApiConfig {
 
     @Bean
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
-                .info(new io.swagger.v3.oas.models.info.Info()
-                        .title("Tata Skills Test 2 - API")
-                        .version("1.0.0")
-                        .description("API del microservicio tata-skill-test2 (Cuentas y Movimientos)")
-                        .contact(new io.swagger.v3.oas.models.info.Contact()
-                                .name("Bradley Corro")
-                                .url("https://github.com/bradleycorro")
-                                .email("noreply@example.com"))
-                        .license(new License().name("Apache 2.0").url("https://www.apache.org/licenses/LICENSE-2.0"))
-                )
                 .externalDocs(new ExternalDocumentation()
                         .description("Documentacion externa")
                         .url("https://springdoc.org/"));
