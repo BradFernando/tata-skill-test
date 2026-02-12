@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.bradleycorro</groupId>
     <artifactId>tata-skills-test</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1-release</version>
     <name>tata-skills-test</name>
     <description>tata-skills-test</description>
     <url/>
