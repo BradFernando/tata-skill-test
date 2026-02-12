@@ -6,6 +6,10 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+/**
+ * Entidad de negocio que representa a un Cliente.
+ * Hereda atributos de Persona y agrega informacion especifica de acceso y estado.
+ */
 @Data
 @SuperBuilder
 @AllArgsConstructor

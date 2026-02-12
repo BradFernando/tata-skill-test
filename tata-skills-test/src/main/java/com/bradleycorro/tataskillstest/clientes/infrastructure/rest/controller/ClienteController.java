@@ -13,6 +13,10 @@ import org.springframework.web.bind.annotation.*;
 
         import java.util.List;
 
+/**
+ * Controlador REST que expone los servicios de gestion de Clientes.
+ * Actua como adaptador de entrada convirtiendo peticiones HTTP en llamadas al dominio.
+ */
 @RestController
 @RequestMapping("/clientes")
 @RequiredArgsConstructor
@@ -21,6 +25,10 @@ public class ClienteController {
     private final IClienteUseCaseIn clienteUseCaseIn;
     private final ClienteMapper clienteMapper;
 
+    /**
+     * Endpoint para la creacion de un nuevo cliente.
+     * Retorna el recurso creado con estado 201.
+     */
     @PostMapping
     public ResponseEntity<ApiResponse<ClienteResponse>> createCliente(@RequestBody ClienteRequest request) {
         Cliente cliente = clienteMapper.toDomain(request);
@@ -29,6 +37,9 @@ public class ClienteController {
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(response));
     }
 
+    /**
+     * Endpoint para la actualizacion parcial o total de un cliente.
+     */
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<ClienteResponse>> updateCliente(@PathVariable Long id, @RequestBody ClienteRequest request) {
         Cliente cliente = clienteMapper.toDomain(request);

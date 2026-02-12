@@ -8,9 +8,16 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+/**
+ * Mapeador especializado para la entidad Cliente.
+ * Centraliza la conversion entre los modelos de Dominio, Entidades JPA y DTOs de API.
+ */
 @Component
 public class ClienteMapper {
 
+    /**
+     * Convierte una entidad de base de datos en un objeto de dominio.
+     */
     public Cliente toDomain(ClienteEntity entity) {
         if (entity == null) return null;
         return Cliente.builder()

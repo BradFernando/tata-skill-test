@@ -3,6 +3,7 @@ package com.bradleycorro.tataskilltest2.movimientos.infrastructure.rest.controll
 import com.bradleycorro.tataskilltest2.movimientos.application.dto.MovimientoRequest;
 import com.bradleycorro.tataskilltest2.movimientos.domain.models.Movimiento;
 import com.bradleycorro.tataskilltest2.movimientos.domain.ports.in.IMovimientoUseCaseIn;
+import com.bradleycorro.tataskilltest2.movimientos.infrastructure.adapters.mappers.MovimientoApiMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -26,7 +27,10 @@ public class MovimientoControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private IMovimientoUseCaseIn useCase;
+    private IMovimientoUseCaseIn movimientoUseCaseIn;
+
+    @MockBean
+    private MovimientoApiMapper movimientoApiMapper;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -39,7 +43,8 @@ public class MovimientoControllerTest {
         request.setTipoMovimiento("Deposito");
 
         Movimiento movimientoMock = new Movimiento(1L, LocalDateTime.now(), "Deposito", 100.0, 200.0, 1L);
-        Mockito.when(useCase.create(any(Movimiento.class))).thenReturn(movimientoMock);
+        Mockito.when(movimientoUseCaseIn.createMovimiento(any())).thenReturn(movimientoMock);
+        Mockito.when(movimientoApiMapper.fromRequest(any())).thenReturn(movimientoMock);
 
         mockMvc.perform(post("/movimientos")
                         .contentType(MediaType.APPLICATION_JSON)
