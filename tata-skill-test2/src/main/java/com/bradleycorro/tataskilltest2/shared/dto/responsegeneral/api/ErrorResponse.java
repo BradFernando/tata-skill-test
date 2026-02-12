@@ -1,19 +1,21 @@
 package com.bradleycorro.tataskilltest2.shared.dto.responsegeneral.api;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 /**
- * Estructura estandarizada para representar errores en la API.
+ * ErrorResponse representa un error individual dentro de una respuesta estandarizada.
  */
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 public class ErrorResponse {
-    private int status;
-    private String type;
-    private String message;
+
+    private final String code;
+    private final String field;
+    private final String message;
+
+    public ErrorResponse(String code, String field, String message) {
+        this.code = code;
+        this.field = field;
+        this.message = message;
+    }
+
+    public String getCode() { return code; }
+    public String getField() { return field; }
+    public String getMessage() { return message; }
 }
