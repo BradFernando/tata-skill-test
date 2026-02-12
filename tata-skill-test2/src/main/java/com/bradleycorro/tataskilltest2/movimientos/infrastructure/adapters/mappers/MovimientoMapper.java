@@ -10,14 +10,14 @@ import org.springframework.stereotype.Component;
 public class MovimientoMapper {
     public Movimiento toDomain(MovimientoEntity entity) {
         if (entity == null) return null;
-        return new Movimiento(
-                entity.getId(),
-                entity.getFecha(),
-                entity.getTipoMovimiento(),
-                entity.getValor(),
-                entity.getSaldo(),
-                entity.getCuenta() != null ? entity.getCuenta().getId() : null
-        );
+        return Movimiento.builder()
+                .id(entity.getId())
+                .fecha(entity.getFecha())
+                .tipoMovimiento(entity.getTipoMovimiento())
+                .valor(entity.getValor())
+                .saldo(entity.getSaldo())
+                .cuentaId(entity.getCuenta() != null ? entity.getCuenta().getId() : null)
+                .build();
     }
 
     public MovimientoEntity toEntity(Movimiento domain, CuentaEntity cuenta) {

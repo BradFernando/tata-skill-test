@@ -11,6 +11,11 @@ import java.time.LocalDateTime;
 public class MovimientoApiMapper {
     public Movimiento fromRequest(MovimientoRequest r) {
         if (r == null) return null;
-        return new Movimiento(null, LocalDateTime.now(), r.getTipoMovimiento(), r.getValor(), null, r.getCuentaId());
+        return Movimiento.builder()
+                .fecha(LocalDateTime.now())
+                .tipoMovimiento(r.getTipoMovimiento())
+                .valor(r.getValor())
+                .cuentaId(r.getCuentaId())
+                .build();
     }
 }

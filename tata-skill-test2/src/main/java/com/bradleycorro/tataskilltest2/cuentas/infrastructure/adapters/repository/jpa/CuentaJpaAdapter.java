@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -17,6 +16,11 @@ public class CuentaJpaAdapter implements ICuentaRepositoryOut {
     private final ICuentaJpaRepository repository;
     private final CuentaMapper cuentaMapper;
 
+    /**
+     * Persiste una cuenta en la base de datos PostgreSQL.
+     * @param cuenta Entidad de dominio a guardar.
+     * @return Entidad de dominio persistida y mapeada.
+     */
     @Override
     public Cuenta save(Cuenta cuenta) {
         CuentaEntity entity = cuentaMapper.toEntity(cuenta);
@@ -37,19 +41,14 @@ public class CuentaJpaAdapter implements ICuentaRepositoryOut {
     public List<Cuenta> findAll() {
         return repository.findAll().stream()
                 .map(cuentaMapper::toDomain)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
     public List<Cuenta> findByClienteId(Long clienteId) {
         return repository.findByClienteId(clienteId).stream()
                 .map(cuentaMapper::toDomain)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public boolean existsById(Long id) {
-        return repository.existsById(id);
+                .toList();
     }
 
     @Override

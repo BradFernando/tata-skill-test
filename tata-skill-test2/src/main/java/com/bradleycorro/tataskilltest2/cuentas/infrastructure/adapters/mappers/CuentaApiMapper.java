@@ -10,7 +10,13 @@ import org.springframework.stereotype.Component;
 public class CuentaApiMapper {
     public Cuenta fromRequest(CuentaRequest r) {
         if (r == null) return null;
-        return new Cuenta(null, r.getNumeroCuenta(), r.getTipoCuenta(), r.getSaldoInicial(), r.getEstado(), r.getClienteId());
+        return Cuenta.builder()
+                .numeroCuenta(r.getNumeroCuenta())
+                .tipoCuenta(r.getTipoCuenta())
+                .saldoInicial(r.getSaldoInicial())
+                .estado(r.getEstado())
+                .clienteId(r.getClienteId())
+                .build();
     }
 
     public CuentaResponse toResponse(Cuenta d) {

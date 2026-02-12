@@ -1,10 +1,11 @@
 package com.bradleycorro.tataskilltest2.movimientos.infrastructure.rest.controller;
 
+import com.bradleycorro.tataskilltest2.movimientos.domain.exceptions.MovimientoNotFoundException;
+import com.bradleycorro.tataskilltest2.movimientos.infrastructure.adapters.mappers.MovimientoApiMapper;
 import com.bradleycorro.tataskilltest2.shared.dto.responsegeneral.api.ApiResponse;
 import com.bradleycorro.tataskilltest2.movimientos.application.dto.MovimientoRequest;
 import com.bradleycorro.tataskilltest2.movimientos.domain.models.Movimiento;
 import com.bradleycorro.tataskilltest2.movimientos.domain.ports.in.IMovimientoUseCaseIn;
-import com.bradleycorro.tataskilltest2.movimientos.infrastructure.adapters.mappers.MovimientoApiMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -34,10 +35,8 @@ public class MovimientoController {
     @Operation(summary = "Obtener movimiento por id")
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<Movimiento>> findById(@PathVariable Long id) {
-        var opt = movimientoUseCaseIn.findById(id);
-        return opt.map(m -> ResponseEntity.ok(ApiResponse.success(m)))
-                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(ApiResponse.error(HttpStatus.NOT_FOUND, "Movimiento no encontrado", "/movimientos/"+id, null)));
+        var m = movimientoUseCaseIn.findById(id).orElseThrow(MovimientoNotFoundException::new);
+        return ResponseEntity.ok(ApiResponse.success(m));
     }
 
     @Operation(summary = "Listar movimientos")
@@ -45,6 +44,13 @@ public class MovimientoController {
     public ResponseEntity<ApiResponse<List<Movimiento>>> findAll() {
         var list = movimientoUseCaseIn.getAllMovimientos();
         return ResponseEntity.ok(ApiResponse.success(list));
+    }
+
+    @Operation(summary = "Actualizar movimiento")
+    @PutMapping("/{id}")
+    public ResponseEntity<ApiResponse<Movimiento>> update(@PathVariable Long id, @Valid @RequestBody MovimientoRequest request) {
+        var updated = movimientoUseCaseIn.updateMovimiento(id, movimientoApiMapper.fromRequest(request));
+        return ResponseEntity.ok(ApiResponse.success(updated));
     }
 
     @Operation(summary = "Eliminar movimiento")

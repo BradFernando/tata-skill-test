@@ -2,6 +2,7 @@ package com.bradleycorro.tataskilltest2.cuentas.infrastructure.rest.controller;
 
 import com.bradleycorro.tataskilltest2.cuentas.application.dto.CuentaRequest;
 import com.bradleycorro.tataskilltest2.cuentas.application.dto.CuentaResponse;
+import com.bradleycorro.tataskilltest2.cuentas.domain.exceptions.CuentaNotFoundException;
 import com.bradleycorro.tataskilltest2.cuentas.domain.ports.in.ICuentaUseCaseIn;
 import com.bradleycorro.tataskilltest2.cuentas.infrastructure.adapters.mappers.CuentaApiMapper;
 import com.bradleycorro.tataskilltest2.shared.dto.responsegeneral.api.ApiResponse;
@@ -13,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
 import java.util.List;
 
 @Tag(name = "Cuentas", description = "Endpoints para gestión de cuentas")
@@ -37,10 +37,8 @@ public class CuentaController {
     @Operation(summary = "Obtener cuenta por id")
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<CuentaResponse>> findById(@PathVariable Long id) {
-        var opt = cuentaUseCaseIn.findById(id);
-        return opt.map(c -> ResponseEntity.ok(ApiResponse.success(cuentaApiMapper.toResponse(c))))
-                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(ApiResponse.error(HttpStatus.NOT_FOUND, "Cuenta no encontrada", "/cuentas/"+id, null)));
+        var c = cuentaUseCaseIn.findById(id).orElseThrow(CuentaNotFoundException::new);
+        return ResponseEntity.ok(ApiResponse.success(cuentaApiMapper.toResponse(c)));
     }
 
     @Operation(summary = "Listar cuentas")
