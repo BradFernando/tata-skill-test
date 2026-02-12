@@ -5,6 +5,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+/**
+ * Representa la entidad base de negocio para una persona.
+ * Define atributos comunes compartidos por diferentes tipos de actores en el sistema.
+ */
 @Data
 @SuperBuilder
 @AllArgsConstructor
