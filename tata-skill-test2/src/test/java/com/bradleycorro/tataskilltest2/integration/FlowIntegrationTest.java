@@ -40,7 +40,7 @@ public class FlowIntegrationTest {
                         .content(objectMapper.writeValueAsString(cuentaReq)))
                 .andExpect(status().isCreated());
 
-        // 2. Registrar Movimiento (Depósito 600)
+        // 2. Registrar Movimiento (DepÃ³sito 600)
         MovimientoRequest movReq = new MovimientoRequest();
         movReq.setCuentaId(1L); // Asumiendo id 1
         movReq.setValor(600.0);
