@@ -1,6 +1,7 @@
 package com.bradleycorro.tataskilltest2.movimientos.domain.models;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Movimiento {
     private Long id;
     private LocalDateTime fecha;

@@ -1,5 +1,6 @@
 package com.bradleycorro.tataskilltest2.movimientos.infrastructure.adapters.repository.jpa;
 
+import com.bradleycorro.tataskilltest2.cuentas.domain.exceptions.CuentaNotFoundException;
 import com.bradleycorro.tataskilltest2.cuentas.infrastructure.adapters.repository.jpa.CuentaEntity;
 import com.bradleycorro.tataskilltest2.cuentas.infrastructure.adapters.repository.jpa.ICuentaJpaRepository;
 import com.bradleycorro.tataskilltest2.movimientos.domain.models.Movimiento;
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -21,10 +21,15 @@ public class MovimientoJpaAdapter implements IMovimientoRepositoryOut {
     private final ICuentaJpaRepository cuentaJpaRepository;
     private final MovimientoMapper movimientoMapper;
 
+    /**
+     * Registra un movimiento asociandolo a una cuenta existente.
+     * @param movimiento Entidad de dominio del movimiento.
+     * @return Movimiento persistido.
+     */
     @Override
     public Movimiento save(Movimiento movimiento) {
         CuentaEntity cuenta = cuentaJpaRepository.findById(movimiento.getCuentaId())
-                .orElseThrow(() -> new RuntimeException("Cuenta no encontrada"));
+                .orElseThrow(CuentaNotFoundException::new);
         MovimientoEntity entity = movimientoMapper.toEntity(movimiento, cuenta);
         return movimientoMapper.toDomain(repository.save(entity));
     }
@@ -38,21 +43,21 @@ public class MovimientoJpaAdapter implements IMovimientoRepositoryOut {
     public List<Movimiento> findAll() {
         return repository.findAll().stream()
                 .map(movimientoMapper::toDomain)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
     public List<Movimiento> findByCuentaId(Long cuentaId) {
         return repository.findByCuentaIdOrderByFechaDesc(cuentaId).stream()
                 .map(movimientoMapper::toDomain)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
     public List<Movimiento> findByClienteAndFechaRange(Long clienteId, LocalDateTime start, LocalDateTime end) {
         return repository.findByClienteAndFechaRange(clienteId, start, end).stream()
                 .map(movimientoMapper::toDomain)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override

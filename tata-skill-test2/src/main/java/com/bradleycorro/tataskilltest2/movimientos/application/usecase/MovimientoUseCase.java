@@ -1,7 +1,9 @@
 package com.bradleycorro.tataskilltest2.movimientos.application.usecase;
 
+import com.bradleycorro.tataskilltest2.cuentas.domain.exceptions.CuentaNotFoundException;
 import com.bradleycorro.tataskilltest2.cuentas.domain.models.Cuenta;
 import com.bradleycorro.tataskilltest2.cuentas.domain.ports.out.ICuentaRepositoryOut;
+import com.bradleycorro.tataskilltest2.movimientos.domain.exceptions.MovimientoNotFoundException;
 import com.bradleycorro.tataskilltest2.movimientos.domain.exceptions.SaldoNoDisponibleException;
 import com.bradleycorro.tataskilltest2.movimientos.domain.models.Movimiento;
 import com.bradleycorro.tataskilltest2.movimientos.domain.ports.in.IMovimientoUseCaseIn;
@@ -21,19 +23,29 @@ public class MovimientoUseCase implements IMovimientoUseCaseIn {
     private final IMovimientoRepositoryOut repository;
     private final ICuentaRepositoryOut cuentaRepository;
 
+    /**
+     * Registra un nuevo movimiento en una cuenta.
+     * Realiza validacion de saldo disponible antes de persistir.
+     * @param movimiento Datos del movimiento (tipo, valor, cuenta).
+     * @return Movimiento registrado con saldo actualizado.
+     * @throws SaldoNoDisponibleException Si el saldo es insuficiente para retiros.
+     * @throws CuentaNotFoundException Si la cuenta asociada no existe.
+     */
     @Override
     @Transactional
     public Movimiento createMovimiento(Movimiento movimiento) {
         Cuenta cuenta = cuentaRepository.findById(movimiento.getCuentaId())
-                .orElseThrow(() -> new RuntimeException("Cuenta no encontrada"));
+                .orElseThrow(CuentaNotFoundException::new);
 
-        // Obtener el último saldo disponible.
-        // Si no hay movimientos, el saldo actual es el saldo inicial.
-        List<Movimiento> últimosMovimientos = repository.findByCuentaId(cuenta.getId());
-        double saldoActual = últimosMovimientos.isEmpty() ? cuenta.getSaldoInicial() : últimosMovimientos.get(0).getSaldo();
+        // Obtener el ultimo saldo disponible.
+        // Si no hay movimientos, el saldo actual es el saldo inicial de la cuenta.
+        List<Movimiento> ultimosMovimientos = repository.findByCuentaId(cuenta.getId());
+        double saldoActual = ultimosMovimientos.isEmpty() ? cuenta.getSaldoInicial() : ultimosMovimientos.getFirst().getSaldo();
 
+        // Calcular nuevo saldo considerando el valor del movimiento (positivo o negativo)
         double nuevoSaldo = saldoActual + movimiento.getValor();
 
+        // Validacion de integridad financiera: el saldo no puede ser negativo
         if (nuevoSaldo < 0) {
             throw new SaldoNoDisponibleException();
         }
@@ -58,14 +70,15 @@ public class MovimientoUseCase implements IMovimientoUseCaseIn {
 
     @Override
     public Movimiento updateMovimiento(Long id, Movimiento movimiento) {
-        // En una implementación real, actualizar un movimiento podría requerir re-calcular
+        // En una implementacion real, actualizar un movimiento podria requerir recalcular
         // los saldos de todos los movimientos posteriores. Por simplicidad del ejercicio
-        // y dado que F2 dice "al registrar un movimiento", nos enfocaremos en la creación.
-        throw new UnsupportedOperationException("La actualización de movimientos no está implementada por complejidad de recálculo de saldos");
+        // y dado que F2 dice "al registrar un movimiento", nos enfocaremos en la creacion.
+        throw new UnsupportedOperationException("La actualizacion de movimientos no esta implementada por complejidad de recalculo de saldos");
     }
 
     @Override
     public void deleteMovimiento(Long id) {
+        repository.findById(id).orElseThrow(MovimientoNotFoundException::new);
         repository.deleteById(id);
     }
 }
