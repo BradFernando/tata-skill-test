@@ -58,6 +58,7 @@ public class FlowIntegrationTest {
                         .param("startDate", "2020-01-01T00:00:00")
                         .param("endDate", "2030-01-01T00:00:00"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data[0].saldoDisponible").value(700.0));
+                .andExpect(jsonPath("$.data[0].saldoDisponible").value(700.0))
+                .andExpect(jsonPath("$.data[0].clienteNombre").exists());
     }
 }

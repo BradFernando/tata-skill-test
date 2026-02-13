@@ -6,6 +6,7 @@ import com.bradleycorro.tataskilltest2.movimientos.domain.models.Movimiento;
 import com.bradleycorro.tataskilltest2.movimientos.domain.ports.out.IMovimientoRepositoryOut;
 import com.bradleycorro.tataskilltest2.reportes.application.dto.ReporteMovimientoDTO;
 import com.bradleycorro.tataskilltest2.reportes.domain.ports.in.IReporteUseCaseIn;
+import com.bradleycorro.tataskilltest2.reportes.domain.ports.out.IClienteExternalRepositoryOut;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ public class ReporteUseCase implements IReporteUseCaseIn {
 
     private final ICuentaRepositoryOut cuentaRepository;
     private final IMovimientoRepositoryOut movimientoRepository;
+    private final IClienteExternalRepositoryOut clienteExternalRepository;
 
     /**
      * Genera un reporte detallado de estado de cuenta para un cliente en un rango de fechas.
@@ -32,6 +34,7 @@ public class ReporteUseCase implements IReporteUseCaseIn {
     public List<ReporteMovimientoDTO> generarReporte(Long clienteId, LocalDateTime startDate, LocalDateTime endDate) {
         List<Cuenta> cuentas = cuentaRepository.findByClienteId(clienteId);
         List<Movimiento> movimientos = movimientoRepository.findByClienteAndFechaRange(clienteId, startDate, endDate);
+        String nombreCliente = clienteExternalRepository.findNombreByClienteId(clienteId).orElse(null);
 
         List<ReporteMovimientoDTO> resultado = new ArrayList<>();
         for (Cuenta cuenta : cuentas) {
@@ -40,6 +43,7 @@ public class ReporteUseCase implements IReporteUseCaseIn {
                 if (!cuenta.getId().equals(m.getCuentaId())) continue;
                 ReporteMovimientoDTO dto = new ReporteMovimientoDTO();
                 dto.setFecha(m.getFecha());
+                dto.setClienteNombre(nombreCliente);
                 dto.setNumeroCuenta(cuenta.getNumeroCuenta());
                 dto.setTipo(cuenta.getTipoCuenta());
                 dto.setSaldoInicial(saldoInicial);
