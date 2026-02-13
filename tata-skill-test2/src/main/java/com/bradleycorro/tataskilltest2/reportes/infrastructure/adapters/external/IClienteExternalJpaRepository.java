@@ -4,5 +4,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface IPersonaExternalJpaRepository extends JpaRepository<PersonaExternalEntity, Long> {
+public interface IClienteExternalJpaRepository extends JpaRepository<ClienteExternalEntity, Long> {
 }

@@ -10,11 +10,11 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ClienteExternalJpaAdapter implements IClienteExternalRepositoryOut {
 
-    private final IPersonaExternalJpaRepository repository;
+    private final IClienteExternalJpaRepository repository;
 
     @Override
     public Optional<String> findNombreByClienteId(Long clienteId) {
         return repository.findById(clienteId)
-                .map(PersonaExternalEntity::getNombre);
+                .map(ClienteExternalEntity::getNombre);
     }
 }
