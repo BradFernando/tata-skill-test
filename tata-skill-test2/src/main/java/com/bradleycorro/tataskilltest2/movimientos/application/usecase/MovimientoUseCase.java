@@ -37,6 +37,18 @@ public class MovimientoUseCase implements IMovimientoUseCaseIn {
         Cuenta cuenta = cuentaRepository.findById(movimiento.getCuentaId())
                 .orElseThrow(CuentaNotFoundException::new);
 
+        // Normalizar tipo de movimiento y ajustar signo del valor
+        String tipo = movimiento.getTipoMovimiento().toLowerCase();
+        double valorAjustado = movimiento.getValor();
+
+        if (tipo.contains("retiro")) {
+            valorAjustado = -Math.abs(valorAjustado);
+        } else if (tipo.contains("deposito")) {
+            valorAjustado = Math.abs(valorAjustado);
+        }
+        
+        movimiento.setValor(valorAjustado);
+
         // Obtener el ultimo saldo disponible.
         // Si no hay movimientos, el saldo actual es el saldo inicial de la cuenta.
         List<Movimiento> ultimosMovimientos = repository.findByCuentaId(cuenta.getId());
